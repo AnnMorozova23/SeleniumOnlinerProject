@@ -7,8 +7,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
-import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
+import java.util.List;
+
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
 public class BasePage {
     private final WebDriver driver;
@@ -28,6 +29,7 @@ public class BasePage {
         Wait<WebDriver> wait = new WebDriverWait(driver, 60);
         return wait.until(elementToBeClickable(by));
     }
+
 
     public void navigate(String url) {
         driver.get(url);
