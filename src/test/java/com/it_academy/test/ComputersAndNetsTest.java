@@ -1,61 +1,56 @@
 package com.it_academy.test;
 
-import com.it_academy.onliner.pageobject.HomePage;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import com.it_academy.onliner.pageobject.Header;
+import org.assertj.core.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.it_academy.onliner.framework.DriverManager.getDriver;
 
 
-public class ComputersAndNetsTest {
-    private static HomePage homePage = new HomePage();
+public class ComputersAndNetsTest extends BaseTest {
+    private Header header;
+    private static final String CATALOG_NAVIGATION_LIST = "//div[@class = 'catalog-navigation-list__aside catalog-navigation-list__aside_active']/div[@class = 'catalog-navigation-list__aside-list']";
 
-    @BeforeEach
-    public void navigateToOnlinerPage() {
-        homePage.navigate("https://www.onliner.by/");
-        WebElement element = homePage.waitForElementVisible(By.xpath("//span[@class = 'b-main-navigation__text' and contains(text(), 'Каталог')]"));
-        element.click();
-        WebElement computersElement = homePage.waitForElementToBeClickable(By.xpath("//span[@class = 'catalog-navigation-classifier__item-title-wrapper' and contains(text(), 'Компьютеры')]"));
-        computersElement.click();
+    @BeforeClass
+    public void webDriverInit() {
+        header = new Header();
+        getDriver().get("https://www.onliner.by/");
+
     }
 
     @Test
-    @Disabled
-    public void testListExist() {
-        WebElement listOfElements = homePage.waitForElementVisible(By.xpath("//div[@class = 'catalog-navigation-list__aside catalog-navigation-list__aside_active']/div[@class = 'catalog-navigation-list__aside-list']"));
-        listOfElements.findElement(By.xpath("//div[@class = 'catalog-navigation-list__aside-title' and contains(text(), 'компьютеры, мониторы')]"));
-    }
+    public void testComputerAndNetsPage() {
+        List<String> expectedFilterNames = new ArrayList<>();
+        expectedFilterNames.add("Ноутбуки, компьютеры, мониторы");
+        expectedFilterNames.add("Комплектующие");
+        expectedFilterNames.add("Техника для печати и дизайна");
+        expectedFilterNames.add("Хранение данныех");
+        expectedFilterNames.add("Сетевое оборудование");
 
-    @Test
-    public void testNoteBooks() {
-        WebElement noteBooksElement = homePage.waitForElementVisible(By.xpath("//div[@class = 'catalog-navigation-list__aside-title' and contains(text(), 'компьютеры, мониторы')]"));
-        noteBooksElement.click();
-    }
+        header.clickOnCatalogLink()
+                .clickOnCatalogBarButton("Компьютеры");
 
-    @Test
-    public void testAccessories() {
-        WebElement accessoriesElement = homePage.waitForElementVisible(By.xpath("//div[(normalize-space(text())) = 'Комплектующие']"));
-        accessoriesElement.click();
-    }
+        WebElement element_1 = getDriver().findElement(By.xpath("//div[@class = 'catalog-navigation-list__aside-title' and contains(text(), 'компьютеры, мониторы')]"));
+        String noteBookText = element_1.getText();
 
-    @Test
-    public void testDataStorage() {
-        WebElement dataStorageElement = homePage.waitForElementVisible(By.xpath("//div[@class = 'catalog-navigation-list__aside-title' and contains(text(), 'Хранение')]"));
-        dataStorageElement.click();
-    }
+        WebElement element_2 = getDriver().findElement(By.xpath("//div[@class = 'catalog-navigation-list__aside-title' and contains(text(), 'Комплектующие')]"));
+        String accessoriesText = element_2.getText();
 
-    @Test
-    public void testNetworkHardware() {
-        WebElement networkHardwareElement = homePage.waitForElementVisible(By.xpath("//div[@class = 'catalog-navigation-list__aside-title' and contains(text(), 'Сетевое')]"));
-        networkHardwareElement.click();
-    }
+        List<WebElement> filters = getDriver().findElements(By.xpath(CATALOG_NAVIGATION_LIST));
 
+        List<String> filterNames = filters
+                .stream()
+                .map(el -> el.getText())
+                .collect(Collectors.toList());
 
+        Assertions.assertThat(expectedFilterNames).contains(noteBookText).contains(accessoriesText);
 
-    @AfterAll
-    static void closeBrowser() {
-        homePage.closeBrowser();
     }
 }

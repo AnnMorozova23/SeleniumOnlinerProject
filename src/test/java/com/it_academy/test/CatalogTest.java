@@ -1,81 +1,74 @@
 package com.it_academy.test;
 
-import com.it_academy.onliner.pageobject.HomePage;
-import org.junit.jupiter.api.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class CatalogTest {
-    private static HomePage homePage = new HomePage();
+import com.it_academy.onliner.pageobject.Header;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
-    @BeforeEach
-    public void navigateToOnlinerPage() {
-        homePage.navigate("https://www.onliner.by/");
-        WebElement element = homePage.waitForElementVisible(By.xpath("//span[@class = 'b-main-navigation__text' and contains(text(), 'Каталог')]"));
-        element.click();
+import static com.it_academy.onliner.framework.DriverManager.getDriver;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+public class CatalogTest extends BaseTest {
+
+    private Header header;
+
+    @BeforeClass
+    public void webDriverInit() {
+        header = new Header();
+        getDriver().get("https://www.onliner.by/");
     }
 
     @Test
-    public void testElectronica() {
-        WebElement electronicaElement = homePage.waitForElementToBeClickable(By.xpath("//span[contains (text(), 'Электроника')]"));
-        electronicaElement.click();
+    public void testElectronicaPage() {
+        header.clickOnCatalogLink()
+                .clickOnCatalogBarButton("Электроника");
     }
 
     @Test
-    public void testComputersAndNets() {
-        WebElement computerElement = homePage.waitForElementToBeClickable(By.xpath("//span[@class = 'catalog-navigation-classifier__item-title-wrapper' " +
-                "and contains(text(), 'Компьютеры')]"));
-        computerElement.click();
+    public void testComputerAndNetsPage() {
+        header.clickOnCatalogLink()
+                .clickOnCatalogBarButton("Компьютеры");
     }
 
     @Test
-    public void testAppliances() {
-        WebElement appliancesElement = homePage.waitForElementToBeClickable(By.xpath("//span[@class = 'catalog-navigation-classifier__item-title-wrapper' " +
-                "and contains(text(), 'Бытовая')]"));
-        appliancesElement.click();
+    public void testAppliancesPage() {
+        header.clickOnCatalogLink()
+                .clickOnCatalogBarButton("Бытовая");
     }
 
     @Test
-    public void testConstructionAndRepair() {
-        WebElement constructionElement = homePage.waitForElementToBeClickable(By.xpath("//span[contains(text(),'Стройка')]"));
-        constructionElement.click();
+    public void testConstructionAndRepairPage() {
+        header.clickOnCatalogLink()
+                .clickOnCatalogBarButton("Стройка");
     }
 
     @Test
-    public void testHomeAndGarden() {
-        WebElement homeElement = homePage.waitForElementToBeClickable(By.xpath("//span[contains(@class, 'catalog-navigation-classifier') and contains(text(), 'Дом')]"));
-        homeElement.click();
+    public void testHomeAndGardenPage() {
+        header.clickOnCatalogLink()
+                .clickOnCatalogBarButton("Дом");
     }
 
     @Test
-    public void testAutoAndMoto() {
-        WebElement autoElement = homePage.waitForElementToBeClickable(By.xpath("//span[contains(@class, 'catalog-navigation-classifier') and contains(text(), 'Авто')]"));
-        autoElement.click();
+    public void testAutoAndMotoPage() {
+        header.clickOnCatalogLink()
+                .clickOnCatalogBarButton("Авто");
     }
 
     @Test
-    public void testBeautyAndSport() {
-        WebElement beautyElement = homePage.waitForElementToBeClickable(By.xpath("//span[contains(@class, 'catalog-navigation-classifier') and contains(text(), 'Красота')]"));
-        beautyElement.click();
+    public void testBeautyAndSportPage() {
+        header.clickOnCatalogLink()
+                .clickOnCatalogBarButton("Красота");
     }
 
     @Test
-    public void testChildrenAndMoms() {
-        WebElement childrenElement = homePage.waitForElementToBeClickable(By.xpath("//span[contains(@class, 'catalog-navigation-classifier') and contains(text(), 'Детям')]"));
-        childrenElement.click();
+    public void testChildrenAndMomsPage() {
+        header.clickOnCatalogLink()
+                .clickOnCatalogBarButton("Детям");
     }
 
     @Test
-    public void testWorkAndOffice() {
-        WebElement workElement = homePage.waitForElementToBeClickable(By.xpath("//span[contains(@class, 'catalog-navigation-classifier') and contains(text(), 'Работа')]"));
-        workElement.click();
+    public void testWorkAndOfficePage() {
+        header.clickOnCatalogLink()
+                .clickOnCatalogBarButton("Работа");
     }
-
-
-    @AfterAll
-    static void closeBrowser() {
-        homePage.closeBrowser();
-    }
-
 }
