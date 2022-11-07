@@ -24,4 +24,5 @@ public class BasePage {
         Wait<WebDriver> wait = new WebDriverWait(getDriver(), 60);
         return wait.until(elementToBeClickable(by));
     }
+
 }

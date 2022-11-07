@@ -6,7 +6,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static com.it_academy.onliner.framework.DriverManager.getDriver;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class CatalogTest extends BaseTest {
 
